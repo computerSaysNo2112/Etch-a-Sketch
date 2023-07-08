@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Your Webpage Title</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <!-- Your webpage content here -->
+    <div class="container">
+
+    </div>
+
+
+
+<style>
+.container{
+background-color: orange;
+width: 960px;
+height: 960px;
+border: 1px solid black;
+display: flex;
+flex-direction: column;
+}
+
+.row{
+/* width:100%; */
+background-color: rgb(243, 241, 237);
+border: 1px solid black;
+display: flex;
+height: 20px;
+flex-grow: 1;
+
+}
+
+.grid{
+background-color: aquamarine;
+border:1px solid black;
+flex-grow: 1;
+
+}
+    
+</style>
+
+    <script>
+        let container = document.querySelector(".container");
+        for (i = 0; i < 16; i++) { 
+            let row = document.createElement('div');
+            row.classList.add('row');
+            container.appendChild(row);
+                for (j = 0; j < 16; j++) {
+                let grid = document.createElement('div');
+                grid.classList.add('grid');
+                row.appendChild(grid);
+            }
+        }
+
+    </script>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
