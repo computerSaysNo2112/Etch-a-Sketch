@@ -1,0 +1,28 @@
+.container {
+    background-color: orange;
+    width: 960px;
+    height: 960px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    /* width:100%; */
+    background-color: rgb(243, 241, 237);
+    border: 1px solid black;
+    display: flex;
+    height: 20px;
+    flex-grow: 1;
+
+}
+
+.grid {
+    background-color: aquamarine;
+    border: 1px solid black;
+    flex-grow: 1;
+}
+
+.controls{
+    margin:1%;
+}
