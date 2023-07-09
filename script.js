@@ -1,21 +1,25 @@
-let inputGridSize = document.getElementById("myInput");
-let inputGridSizeButton = document.getElementById("myInputButton");
+let inputGridSize = document.getElementById("inputGridSize");
+let inputGridSizeButton = document.getElementById("gridSizeBtn");
 let container = document.querySelector(".container");
 
 inputGridSizeButton.addEventListener("click", function () {
-  createGrid(40, 40);
+  createGrid(inputGridSize.value, inputGridSize.value);
 });
 
 function createGrid(width, height) {
-  container.innerHTML = "";
+  container.innerHTML = ""; // clears crid
   for (i = 0; i < width; i++) {
-    let row = document.createElement("div");
+    let row = document.createElement("div"); //creates row
     row.classList.add("row");
     container.appendChild(row);
     for (j = 0; j < height; j++) {
-      let grid = document.createElement("div");
+      let grid = document.createElement("div"); //created grid
       grid.classList.add("grid");
-      row.appendChild(grid);
+      row.appendChild(grid); //adds grids to row
+      grid.addEventListener("mouseover", function () {
+        //adding black ink
+        grid.classList.add("blackInk");
+      });
     }
   }
 }
