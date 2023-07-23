@@ -15,9 +15,9 @@ slider.addEventListener("input", function () {
 blackButton.addEventListener("click", function () {
   toggleBlack = !toggleBlack;
   if (toggleBlack) {
-    blackButton.classList.add("black");
+    blackButton.classList.add("shade-on");
   } else if (!toggleBlack) {
-    blackButton.classList.remove("black");
+    blackButton.classList.remove("shade-on");
   }
 });
 
@@ -25,7 +25,6 @@ blackButton.addEventListener("click", function () {
 function blackColor(y) {
   let rgbColor = window.getComputedStyle(y).backgroundColor;
   let hslColor = rgbToHsl(rgbColor);
-  console.log(hslColor);
   let lightness = hslColor[2];
   lightness -= 10;
   if (lightness < 0) lightness = 0;
