@@ -1,28 +1,63 @@
-let inputGridSize = document.getElementById("inputGridSize");
+let gridContainer = document.querySelector(".gridContainer");
+let blackButton = document.getElementById("black");
+let gridSizeDisplay = document.querySelector(".gridSizeDisplay");
 let slider = document.getElementById("slider");
-let container = document.querySelector(".container");
+let colorPicker = document.getElementById("colorpicker");
+let toggleBlack = false;
+let toggleInk = false;
 
+// slider changes amount of grids
 slider.addEventListener("input", function () {
   createGrid(slider.value, slider.value);
+  gridSizeDisplay.innerHTML = `${slider.value} x ${slider.value}`;
 });
 
+blackButton.addEventListener("click", function () {
+  toggleBlack = !toggleBlack;
+  if (toggleBlack) {
+    blackButton.classList.add("black");
+  } else if (!toggleBlack) {
+    blackButton.classList.remove("black");
+  }
+});
+
+// change to black
+function blackColor(y) {
+  let rgbColor = window.getComputedStyle(y).backgroundColor;
+  let hslColor = rgbToHsl(rgbColor);
+  console.log(hslColor);
+  let lightness = hslColor[2];
+  lightness -= 10;
+  if (lightness < 0) lightness = 0;
+  y.style.backgroundColor = `hsl(${hslColor[0]}, ${hslColor[1]}%, ${lightness}%)`;
+}
+
+// Create grid and add event-listener for changing color based on colorPicker
 function createGrid(width, height) {
-  container.innerHTML = ""; // clears crid
+  gridContainer.innerHTML = ""; // clears crid
   for (i = 0; i < width; i++) {
     let row = document.createElement("div"); //creates row
     row.classList.add("row");
-    container.appendChild(row);
+    gridContainer.appendChild(row); // adds row to container
     for (j = 0; j < height; j++) {
-      let grid = document.createElement("div"); //created grid
+      let grid = document.createElement("div"); //creates grid
       grid.classList.add("grid");
       row.appendChild(grid); //adds grids to row
+      grid.addEventListener("click", function () {
+        toggleInk = !toggleInk;
+      });
       grid.addEventListener("mouseover", function () {
-        blackInk(this);
-      }); // this refers to the current grid cell
+        if (toggleInk & toggleBlack) {
+          blackColor(grid);
+        }
+      });
     }
   }
 }
 
+createGrid(10, 10);
+
+//converts rgb to hsl
 function rgbToHsl(rgbColorString) {
   let sep = rgbColorString.indexOf(",") > -1 ? "," : " ";
   rgbColorString = rgbColorString.substr(4).split(")")[0].split(sep);
@@ -61,25 +96,3 @@ function rgbToHsl(rgbColorString) {
 
   return [h * 360, s * 100, l * 100];
 }
-
-function blackInk(grid) {
-  // Get current background color
-  let currentColor = window.getComputedStyle(grid).backgroundColor;
-
-  // Convert RGB color to HSL color
-  let hslColor = rgbToHsl(currentColor);
-
-  // Extract lightness from HSL color
-  let lightness = hslColor[2];
-
-  // Decrease lightness by 10%
-  lightness -= 10;
-
-  // Ensure lightness doesn't go below 0% (goes to pure black then stops)
-  if (lightness < 0) lightness = 0;
-
-  // Set the new background color of the grid cell
-  grid.style.backgroundColor = `hsl(${hslColor[0]}, ${hslColor[1]}%, ${lightness}%)`;
-}
-
-createGrid(10, 10);

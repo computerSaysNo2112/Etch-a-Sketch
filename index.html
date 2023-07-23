@@ -9,24 +9,29 @@
 <body>
     <!-- controls -->
     <div class="controls">
+
         <h1>Etch a sketch</h1>
-        <div class="inputSection">
-            <!-- <label for="inputGridSize">Grid Amount:</label>
-            <input type="text" id="inputGridSize">
-            <button class="button-24" id="gridSizeBtn"> Create </button> -->
-            <label for="inputGridSize">Grid Amount:</label>
-            <div class="slidecontainer">
+
+        <button id="black"> Black </button>
+
+        <div class="gridSection">
+                <div class="gridSizeDisplay"> 16 x 16 </div>
                 <input type="range" min="1" max="100" value="16" class="slider" id="slider">
-            </div>
         </div>
-        <div class="inputSection">
-            <button class="button-24" id="gridSizeBtn"> Black Ink </button>
+
+        <div class="colorSection">
+            <input type="color" id="colorpicker" value="">
         </div>
+
     </div>
-    <!-- container -->
-    <div class="container"></div>
+    <!-- Grid -->
+    <div class="gridContainer"></div>
 
     <script src="script.js"></script>
 </body>
 
 </html>
+
+<!-- 
+// create different button for each 
+// only darken should be progressive  -->
