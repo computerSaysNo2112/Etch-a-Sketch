@@ -1,6 +1,7 @@
 let gridContainer = document.querySelector(".gridContainer");
 let blackButton = document.getElementById("black");
 let gridSizeDisplay = document.querySelector(".gridSizeDisplay");
+let body = document.querySelector("body");
 let slider = document.getElementById("slider");
 let colorPicker = document.getElementById("colorpicker");
 let toggleBlack = false;
@@ -14,12 +15,21 @@ slider.addEventListener("input", function () {
 
 blackButton.addEventListener("click", function () {
   toggleBlack = !toggleBlack;
+  blackButtonColor();
+});
+
+colorPicker.addEventListener("input", function () {
+  toggleBlack = false;
+  blackButtonColor();
+});
+
+function blackButtonColor() {
   if (toggleBlack) {
     blackButton.classList.add("shade-on");
   } else if (!toggleBlack) {
     blackButton.classList.remove("shade-on");
   }
-});
+}
 
 // change to black
 function blackColor(y) {
@@ -29,6 +39,12 @@ function blackColor(y) {
   lightness -= 10;
   if (lightness < 0) lightness = 0;
   y.style.backgroundColor = `hsl(${hslColor[0]}, ${hslColor[1]}%, ${lightness}%)`;
+}
+
+function color(y) {
+  let currentColor = hexToRGBA(colorPicker.value);
+  console.log(currentColor);
+  y.style.backgroundColor = colorPicker.value;
 }
 
 // Create grid and add event-listener for changing color based on colorPicker
@@ -44,10 +60,17 @@ function createGrid(width, height) {
       row.appendChild(grid); //adds grids to row
       grid.addEventListener("click", function () {
         toggleInk = !toggleInk;
+        if (toggleInk) {
+          gridContainer.classList.add("custom-cursor");
+        } else {
+          gridContainer.classList.remove("custom-cursor");
+        }
       });
       grid.addEventListener("mouseover", function () {
-        if (toggleInk & toggleBlack) {
+        if (toggleInk && toggleBlack) {
           blackColor(grid);
+        } else if (toggleInk) {
+          color(grid);
         }
       });
     }
@@ -55,6 +78,15 @@ function createGrid(width, height) {
 }
 
 createGrid(10, 10);
+
+// converts hex to rgba
+function hexToRGBA(hex, opacity) {
+  let r = parseInt(hex.slice(1, 3), 16),
+    g = parseInt(hex.slice(3, 5), 16),
+    b = parseInt(hex.slice(5, 7), 16);
+
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+}
 
 //converts rgb to hsl
 function rgbToHsl(rgbColorString) {
