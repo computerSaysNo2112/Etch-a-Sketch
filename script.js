@@ -1,50 +1,87 @@
 let gridContainer = document.querySelector(".gridContainer");
-let blackButton = document.getElementById("black");
 let gridSizeDisplay = document.querySelector(".gridSizeDisplay");
 let body = document.querySelector("body");
 let slider = document.getElementById("slider");
+let blackBtn = document.getElementById("blackBtn");
+let eraserBtn = document.getElementById("eraserBtn");
 let colorPicker = document.getElementById("colorpicker");
 let toggleBlack = false;
 let toggleInk = false;
+let toggleErase = false;
+let toggleColor = false;
+let spans = document.querySelectorAll("#s1, #s2, #s3");
 
-// slider changes amount of grids
+// EVENT LISTENERS
+function check() {}
+
 slider.addEventListener("input", function () {
-  createGrid(slider.value, slider.value);
-  gridSizeDisplay.innerHTML = `${slider.value} x ${slider.value}`;
+  createGrid(slider.value, slider.value); // takes value from slider and uses it to create grid
+  gridSizeDisplay.innerHTML = `${slider.value} x ${slider.value}`; // displays grid size
 });
 
-blackButton.addEventListener("click", function () {
-  toggleBlack = !toggleBlack;
-  blackButtonColor();
+blackBtn.addEventListener("click", function () {
+  toggleBlack = !toggleBlack; //toggles black button on or off
+  toggleErase = false;
+  if (toggleBlack == true) {
+    blackBtn.classList.add("on");
+  } else {
+    blackBtn.classList.remove("on");
+  }
+  if (toggleErase == true) {
+    eraserBtn.classList.add("on");
+  } else if (toggleErase == false) {
+    eraserBtn.classList.remove("on");
+  }
+  spans[0].textContent = toggleBlack;
+  spans[1].textContent = toggleErase;
+});
+
+eraserBtn.addEventListener("click", function () {
+  toggleErase = !toggleErase;
+  toggleBlack = false;
+  if (toggleBlack) {
+    blackBtn.classList.add("on");
+  } else if (!toggleBlack) {
+    blackBtn.classList.remove("on");
+  }
+  if (toggleErase) {
+    eraserBtn.classList.add("on");
+  } else if (!toggleErase) {
+    eraserBtn.classList.remove("on");
+  }
+  spans[0].textContent = toggleBlack;
+  spans[1].textContent = toggleErase;
 });
 
 colorPicker.addEventListener("input", function () {
-  toggleBlack = false;
-  blackButtonColor();
+  toggleColor = !toggleColor;
+  toggleBlack = false; // toggles black button to false
+  toggleErase = false;
+  spans[0].textContent = toggleBlack;
+  spans[1].textContent = toggleErase;
+
+  blackBtn.classList.remove("on");
+  eraserBtn.classList.remove("on");
 });
 
-function blackButtonColor() {
-  if (toggleBlack) {
-    blackButton.classList.add("shade-on");
-  } else if (!toggleBlack) {
-    blackButton.classList.remove("shade-on");
-  }
-}
-
-// change to black
+// Incrementally darken the grid
 function blackColor(y) {
   let rgbColor = window.getComputedStyle(y).backgroundColor;
   let hslColor = rgbToHsl(rgbColor);
+  console.log(hslColor);
   let lightness = hslColor[2];
   lightness -= 10;
   if (lightness < 0) lightness = 0;
   y.style.backgroundColor = `hsl(${hslColor[0]}, ${hslColor[1]}%, ${lightness}%)`;
 }
 
+// set grid to color based on colorpicker.value
 function color(y) {
-  let currentColor = hexToRGBA(colorPicker.value);
-  console.log(currentColor);
   y.style.backgroundColor = colorPicker.value;
+}
+// set grid to white/eraser
+function erase(y) {
+  y.style.backgroundColor = "white";
 }
 
 // Create grid and add event-listener for changing color based on colorPicker
@@ -69,7 +106,10 @@ function createGrid(width, height) {
       grid.addEventListener("mouseover", function () {
         if (toggleInk && toggleBlack) {
           blackColor(grid);
-        } else if (toggleInk) {
+        } else if (toggleInk && toggleErase) {
+          erase(grid);
+          console.log(grid.backgroundColor);
+        } else if (toggleInk && toggleColor) {
           color(grid);
         }
       });
@@ -78,15 +118,6 @@ function createGrid(width, height) {
 }
 
 createGrid(10, 10);
-
-// converts hex to rgba
-function hexToRGBA(hex, opacity) {
-  let r = parseInt(hex.slice(1, 3), 16),
-    g = parseInt(hex.slice(3, 5), 16),
-    b = parseInt(hex.slice(5, 7), 16);
-
-  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-}
 
 //converts rgb to hsl
 function rgbToHsl(rgbColorString) {
