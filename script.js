@@ -5,15 +5,15 @@ let slider = document.getElementById("slider");
 let blackBtn = document.getElementById("blackBtn");
 let eraserBtn = document.getElementById("eraserBtn");
 let colorPicker = document.getElementById("colorpicker");
+let colorBtn = document.getElementById("colorBtn");
 let toggleBlack = false;
 let toggleInk = false;
 let toggleErase = false;
+let toggleMultiColor = false;
 let toggleColor = false;
 let spans = document.querySelectorAll("#s1, #s2, #s3");
 
 // EVENT LISTENERS
-function check() {}
-
 slider.addEventListener("input", function () {
   createGrid(slider.value, slider.value); // takes value from slider and uses it to create grid
   gridSizeDisplay.innerHTML = `${slider.value} x ${slider.value}`; // displays grid size
@@ -22,16 +22,19 @@ slider.addEventListener("input", function () {
 blackBtn.addEventListener("click", function () {
   toggleBlack = !toggleBlack; //toggles black button on or off
   toggleErase = false;
-  if (toggleBlack == true) {
-    blackBtn.classList.add("on");
-  } else {
-    blackBtn.classList.remove("on");
-  }
-  if (toggleErase == true) {
-    eraserBtn.classList.add("on");
-  } else if (toggleErase == false) {
-    eraserBtn.classList.remove("on");
-  }
+  toggleColor = false;
+  toggleMultiColor = false;
+  assignButtons();
+  spans[0].textContent = toggleBlack;
+  spans[1].textContent = toggleErase;
+});
+
+colorBtn.addEventListener("click", function () {
+  toggleMultiColor = !toggleMultiColor;
+  toggleErase = false;
+  toggleBlack = false;
+  toggleColor = false;
+  assignButtons();
   spans[0].textContent = toggleBlack;
   spans[1].textContent = toggleErase;
 });
@@ -39,29 +42,44 @@ blackBtn.addEventListener("click", function () {
 eraserBtn.addEventListener("click", function () {
   toggleErase = !toggleErase;
   toggleBlack = false;
+  toggleColor = false;
+  toggleMultiColor = false;
+  assignButtons();
+  spans[0].textContent = toggleBlack;
+  spans[1].textContent = toggleErase;
+});
+
+function assignButtons() {
   if (toggleBlack) {
     blackBtn.classList.add("on");
   } else if (!toggleBlack) {
     blackBtn.classList.remove("on");
   }
+
   if (toggleErase) {
     eraserBtn.classList.add("on");
   } else if (!toggleErase) {
     eraserBtn.classList.remove("on");
   }
-  spans[0].textContent = toggleBlack;
-  spans[1].textContent = toggleErase;
-});
+
+  if (toggleMultiColor) {
+    colorBtn.classList.add("on");
+  } else if (!toggleMultiColor) {
+    colorBtn.classList.remove("on");
+  }
+}
 
 colorPicker.addEventListener("input", function () {
-  toggleColor = !toggleColor;
+  toggleColor = true;
   toggleBlack = false; // toggles black button to false
   toggleErase = false;
+  toggleMultiColor = false;
   spans[0].textContent = toggleBlack;
   spans[1].textContent = toggleErase;
 
   blackBtn.classList.remove("on");
   eraserBtn.classList.remove("on");
+  colorBtn.classList.remove("on");
 });
 
 // Incrementally darken the grid
@@ -75,13 +93,23 @@ function blackColor(y) {
   y.style.backgroundColor = `hsl(${hslColor[0]}, ${hslColor[1]}%, ${lightness}%)`;
 }
 
+function erase(y) {
+  y.style.backgroundColor = "white";
+}
+
 // set grid to color based on colorpicker.value
 function color(y) {
   y.style.backgroundColor = colorPicker.value;
 }
 // set grid to white/eraser
-function erase(y) {
-  y.style.backgroundColor = "white";
+function multicolor(y) {
+  let randomColor;
+
+  do {
+    randomColor = Math.floor(Math.random() * 16777215).toString(16);
+  } while (randomColor === "FFFFFF");
+
+  y.style.backgroundColor = "#" + randomColor;
 }
 
 // Create grid and add event-listener for changing color based on colorPicker
@@ -108,7 +136,8 @@ function createGrid(width, height) {
           blackColor(grid);
         } else if (toggleInk && toggleErase) {
           erase(grid);
-          console.log(grid.backgroundColor);
+        } else if (toggleInk && toggleMultiColor) {
+          multicolor(grid);
         } else if (toggleInk && toggleColor) {
           color(grid);
         }
