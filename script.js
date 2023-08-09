@@ -51,21 +51,21 @@ eraserBtn.addEventListener("click", function () {
 
 function assignButtons() {
   if (toggleBlack) {
-    blackBtn.classList.add("on");
+    blackBtn.classList.add("click");
   } else if (!toggleBlack) {
-    blackBtn.classList.remove("on");
+    blackBtn.classList.remove("click");
   }
 
   if (toggleErase) {
-    eraserBtn.classList.add("on");
+    eraserBtn.classList.add("click");
   } else if (!toggleErase) {
-    eraserBtn.classList.remove("on");
+    eraserBtn.classList.remove("click");
   }
 
   if (toggleMultiColor) {
-    colorBtn.classList.add("on");
+    colorBtn.classList.add("click");
   } else if (!toggleMultiColor) {
-    colorBtn.classList.remove("on");
+    colorBtn.classList.remove("click");
   }
 }
 
@@ -106,7 +106,9 @@ function multicolor(y) {
   let randomColor;
 
   do {
-    randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    randomColor = (Math.floor(Math.random() * 16777215) | (1 << 24))
+      .toString(16)
+      .slice(1);
   } while (randomColor === "FFFFFF");
 
   y.style.backgroundColor = "#" + randomColor;
