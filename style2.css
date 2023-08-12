@@ -7,12 +7,22 @@ body{
     -webkit-user-drag: none;
 }
 
+.title{
+    font-size:3em;
+}
+
 .controls {
     width: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: rgb(56, 56, 59);
+    height: 30%;
+    margin-top:10%;
+    padding-bottom:3%;
+    margin-right: 2%;
+    justify-content: center;
+    border-radius: 12px;
 }
 
 .element{
@@ -60,7 +70,7 @@ body{
 
 .button:active {
     /* Give it a pressed look with a gradient background transitioning to the orange */
-    background: linear-gradient(145deg, #f8f9ca, orange);
+    background: linear-gradient(145deg, #e5e74f, orange);
 
     /* Deepen the shadow for a more pressed feel */
     box-shadow: rgba(45, 35, 66, 0.4) 0 1px 2px, rgba(45, 35, 66, 0.3) 0 3px 6px -2px, #D6D6E7 0 -2px 0 inset;
@@ -72,15 +82,14 @@ body{
 
 .click {
     /* A gradient background to make it more interesting */
-    background: linear-gradient(145deg, orange, #FC8A00);
-    
-        /* Adding a deeper shadow for depth */
+    background: linear-gradient(145deg, rgb(0, 255, 170), #FC8A00);
+    /* Adding a deeper shadow for depth */
     box-shadow: rgba(45, 35, 66, 0.3) 0 4px 8px, rgba(45, 35, 66, 0.2) 0 8px 12px -3px;
     }
 
-
 #colorpicker{
     width: 100px;
+    height: 100px;
 }
 
 .title{

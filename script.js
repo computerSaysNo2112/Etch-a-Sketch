@@ -70,16 +70,13 @@ function assignButtons() {
 }
 
 colorPicker.addEventListener("input", function () {
-  toggleColor = true;
-  toggleBlack = false; // toggles black button to false
-  toggleErase = false;
+  blackBtn.classList.remove("click");
+  eraserBtn.classList.remove("click");
+  colorBtn.classList.remove("click");
+  toggleBlack = false;
   toggleMultiColor = false;
-  spans[0].textContent = toggleBlack;
-  spans[1].textContent = toggleErase;
-
-  blackBtn.classList.remove("on");
-  eraserBtn.classList.remove("on");
-  colorBtn.classList.remove("on");
+  toggleErase = false;
+  toggleColor = true;
 });
 
 // Incrementally darken the grid
@@ -101,6 +98,7 @@ function erase(y) {
 function color(y) {
   y.style.backgroundColor = colorPicker.value;
 }
+
 // set grid to white/eraser
 function multicolor(y) {
   let randomColor;
